@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
+apply plugin: 'org.sonarqube' 
+apply plugin: 'jacoco'
 
 mainClassName = 'hello.HelloWorld'
 
@@ -16,6 +18,56 @@ jar {
     version =  '0.1.0'
 }
 // end::jar[]
+
+buildscript {
+
+     ext {
+
+           springBootVersion = '2.0.0.RELEASE'
+
+     }
+
+     repositories {
+
+           mavenCentral()
+
+     }
+
+     dependencies {
+
+           classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+
+           classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2") // newly added line
+
+ 
+
+     }
+
+}
+
+ 
+
+// sonarqube block is added newly
+
+ 
+
+sonarqube {
+
+       properties{
+
+                     property "sonar.java.coveragePlugin", "jacoco"
+
+                     property "sonar.java.binaries", "build/classes/"
+
+                     property "sonar.jacoco.reportPaths", "build/jacoco/test_sonar.exec"
+
+                     property "sonar.junit.reportsPath", "build/test-results/test/"
+
+                    
+
+       }
+
+}
 
 // tag::dependencies[]
 sourceCompatibility = 1.8
